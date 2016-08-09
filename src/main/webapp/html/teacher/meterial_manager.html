@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>教师端</title>
+<!-- Bootstrap Core CSS -->
+<link href="../../css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom CSS -->
+<link href="../../css/sb-admin.css" rel="stylesheet">
+<link href="../../css/sweet-alert.css" rel="stylesheet" />
+<script src="../../js/common/sweet-alert.js"></script>
+<!-- Morris Charts CSS -->
+<link href="../../css/morris.css" rel="stylesheet">
+<link href="../../css/common.css" rel="stylesheet">
+<!-- Custom Fonts -->
+<link href="../../font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<!-- jQuery -->
+<script src="../../js/common/jquery.min.js"></script>
+<!-- jquery.pagination -->
+<link rel="stylesheet" href="../../js/jquery_pagination/pagination.css">
+<script type="text/javascript"
+	src="../../js/jquery_pagination/jquery.pagination.js"></script>
+</head>
+
+<body id='main'>
+
+	<div id="wrapper">
+
+		<!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="course_manager.html">教师端</a>
+			</div>
+			<!-- Top Menu Items -->
+			<ul class="nav navbar-right top-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown"><i class="fa fa-user"></i><label
+						id="teacher_name"></label><b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="teacher_info.html"><i
+								class="fa fa-fw fa-user"></i> 个人信息</a></li>
+						<li class="divider"></li>
+						<li id="logout"><a href="javascripy:void(0);"><i
+								class="fa fa-fw fa-power-off"></i>退出</a></li>
+					</ul></li>
+			</ul>
+			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav side-nav ">
+					<li><a href="course_manager.html"><i
+							class="fa fa-fw fa-dashboard"></i>课程管理</a></li>
+					<li><a href="homework_manager.html"><i
+							class="fa fa-fw fa-book"></i>作业管理</a></li>
+					<!-- <li><a href="student_manager.html"><i
+							class="fa fa-fw fa-table"></i>学生管理</a></li> -->
+					<li><a href="question_manager.html"><i
+							class="fa fa-fw fa-edit"></i>提问管理</a></li>
+					<li class="active"><a href="meterial_manager.html"><i
+							class="fa fa-fw fa-desktop"></i>材料管理</a></li>
+					<li><a href="student_library.html"><i
+							class="fa fa-fw fa-bar-chart-o"></i>学生库管理</a></li>
+					<li><a href="teacher_info.html"><i
+							class="fa fa-fw fa-wrench"></i>个人信息</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+
+		<div id="page-wrapper" style="height: 100%;">
+
+			<div class="container-fluid" id="main">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div>
+						<ol class="breadcrumb">
+							<li><i class="fa fa-dashboard"></i> <a
+								href="course_manager.html">教师端</a></li>
+							<li class="active"><i class="fa fa-table"></i> 材料管理</li>
+						</ol>
+					</div>
+				</div>
+				<!-- /.row -->
+				<div class="row">
+
+					<div class="bs-example"
+						data-example-id="panel-without-body-with-table">
+						<div class="panel panel-default">
+							<!-- Default panel contents -->
+							<div class="panel-heading">搜索栏</div>
+
+							<div class="panel-body">
+								<form class="form-inline" role="form" name="form2">
+									<div class="form-group">
+										<label for="course_name"
+											class="text-right search_form_div_label">课程名称：</label> <select
+											id="course_name" class="form-control"></select>
+									</div>
+									<div class="form-group">
+										<label for="question_name"
+											class="text-right search_form_div_label">资料类型：</label> <select
+											id="type" class="form-control">
+											<option value="0">文档</option>
+											<option value="1">视频</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="question_name"
+											class="text-right search_form_div_label">资料名称：</label> <input
+											type="text" class="form-control" id="material_name"
+											placeholder="资料名称">
+									</div>
+									<div class="form-group" style="margin-left: 10%;">
+										<button type="button" id="search"
+											class="btn btn-primary btn-info">
+											搜索<span class="glyphicon glyphicon-search"></span>
+										</button>
+										<button type="button" id="reset"
+											class="btn btn-primary btn-warning">
+											重置<span class="glyphicon glyphicon-refresh"></span>
+										</button>
+									</div>
+								</form>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="bs-example"
+						data-example-id="panel-without-body-with-table" >
+						<div class="rows panel panel-default">
+							<!-- Default panel contents -->
+							<div class="panel-heading">
+								课程管理
+								<button type="button" id="plus"
+									class="btn btn-primary btn-info right" style="margin-left: 85%">
+									新增 <span class="glyphicon glyphicon-plus"></span>
+								</button>
+							</div>
+							<!-- Table -->
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="col-md-1">#</th>
+										<th class="col-md-2">资料名称</th>
+										<th class="col-md-6">资料链接</th>
+										<th class="col-md-3">操作</th>
+									</tr>
+								</thead>
+								<tbody id="tbody">
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<div class="text-center">
+					<div id="pagination" class="pagination"></div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+
+		</div>
+		<!-- /#page-wrapper -->
+		<div class="modal fade" id="modal_add">
+			<div class="modal-dialog" class="col-md-6" id="file_modal">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel"></h4>
+					</div>
+					<div style="display: none" class="alert alert-danger text-center"
+						role="alert" id="err">
+						<p id="errtip" class="text-danger"></p>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal addshop-form" method="post"
+							id="form_add" role="form" action="" name="form_add">
+							<div class="form-group">
+								<div class="col-sm-8">
+									<input type="text" style="display: none" class="form-control"
+										id="a_id">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="point" class="col-sm-3 control-label">上传资料：</label>
+								<div class="col-sm-6" id="file_body">
+									<input type="file" name="file" id="file">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							<span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp; 关闭
+						</button>
+						<button type="button" class="btn btn-success" id="add">
+							<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp; 添加
+						</button>
+					</div>
+			</div>
+
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="../../js/common/bootstrap.min.js"></script>
+	<script src="../../js/common/commonAjax.js"></script>
+	<script src="../../js/common/teacher.js"></script>
+	<script src="../../js/common/jquery.validate.min.js"></script>
+	<script src="../../js/common/jquery.validate.method.js"></script>
+	<script src="../../js/common/maskUtil.js"></script>
+	<script src="../../js/home/material_manage.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			material_manage.init();
+		});
+	</script>
+</body>
+
+</html>

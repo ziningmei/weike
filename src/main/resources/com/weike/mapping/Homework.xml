@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weike.dao.HomeworkDao">
+
+	<select id="select" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT 
+			homework_id,
+			content,
+			course_id,
+			delflag,
+			updatetime,
+			result_url,
+			showflag,
+			homework_name,
+			DATE_FORMAT(endDate, '%Y-%m-%d')as endDate
+		
+		FROM homework
+		WHERE delflag='0'
+		<if test="id != '' and id != null">
+			AND homework_id = #{id}
+		</if>
+	</select>
+
+	<select id="listAll" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT homework_name,DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,content,homework_id FROM homework
+		where delflag='0'
+		<if test="content != '' and content != null">
+			AND content like CONCAT('%',#{content},'%')
+		</if>
+		<if test="course_id != '' and course_id != null">
+			AND course_id = #{course_id}
+		</if>
+		<if test="result_url != '' and result_url != null">
+			AND result_url = #{result_url}
+		</if>
+		<if test="showflag != '' and showflag != null">
+			AND showflag = #{showflag}
+		</if>
+		order by homework_id desc
+	</select>
+
+	<select id="listAllRecordsCount" resultType="int">
+		SELECT COUNT(*) FROM
+		homework
+		WHERE DELFLAG = '0'
+		<if test="homework_name != '' and homework_name != null">
+			AND homework_name like CONCAT('%',#{homework_name},'%')
+		</if>
+		<if test="course_id != '' and course_id != null">
+			AND course_id = #{course_id}
+		</if>
+		<if test="result_url != '' and result_url != null">
+			AND result_url = #{result_url}
+		</if>
+		<if test="showflag != '' and showflag != null">
+			AND showflag = #{showflag}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT h.*,c.course_name FROM homework h 
+		left join course c on c.course_id=h.course_id
+		where h.delflag='0'
+		<if test="params.homework_name != '' and params.homework_name != null">
+			AND h.homework_name like CONCAT('%',#{params.homework_name},'%') 
+		</if>
+		<if test="params.course_id != '' and params.course_id != null">
+			AND h.course_id = #{params.course_id}
+		</if>
+		<if test="params.result_url != '' and params.result_url != null">
+			AND h.result_url = #{params.result_url}
+		</if>
+		<if test="params.showflag != '' and params.showflag != null">
+			AND h.showflag = #{params.showflag}
+		</if>
+		order by h.homework_id desc
+		LIMIT
+		#{start}, #{limit}
+	</select>
+
+	<insert id="insert" parameterType="com.weike.rvo.HomeworkRVO">
+		<![CDATA[
+		insert into homework(
+			content,
+			course_id,
+			result_url,
+			homework_name,
+			endDate
+		)
+		values(
+			#{content},
+			#{course_id},
+			#{result_url},
+			#{homework_name},
+			#{endDate}
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.weike.rvo.HomeworkRVO">
+		UPDATE homework
+		<set>
+			<if test="content != '' and content != null">
+				content = #{content},
+			</if>
+			<if test="course_id != '' and course_id != null">
+				course_id = #{course_id},
+			</if>
+			<if test="endDate != '' and endDate != null">
+				endDate = #{endDate},
+			</if>
+			<if test="result_url != '' and result_url != null">
+				result_url = #{result_url},
+			</if>
+			<if test="homework_name != '' and homework_name != null">
+				homework_name = #{homework_name},
+			</if>
+			<if test="showflag != '' and showflag != null">
+				showflag = #{showflag}
+			</if>
+		</set>
+		WHERE
+		homework_id=#{homework_id}
+	</update>
+
+	<delete id="delete">
+		UPDATE homework
+		SET
+		delflag='1'
+		WHERE
+		homework_id=#{id}
+	</delete>
+
+	<delete id="batchDelete">
+		DELETE FROM homework
+		WHERE homework_id IN
+		<foreach item="item" index="index" collection="delIds" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+	<select id="getUnsubmitCourse" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT p.* FROM(
+		SELECT
+		h.homework_id,
+		h.homework_name,
+		c.course_name,
+		c.course_id,
+		DATE_FORMAT(h.endDate, '%Y-%m-%d')as endDate
+		FROM
+		homework h
+		LEFT JOIN submit s ON h.homework_id = s.homework_id
+		LEFT JOIN course
+		c on c.course_id=h.course_id
+		WHERE h.homework_id NOT in(SELECT
+		homework_id from submit where student_id=#{student_id} and delflag=0)
+		AND DATE_FORMAT(h.endDate, '%Y-%m-%d')>=DATE_FORMAT(NOW(), '%Y-%m-%d')
+		and h.delflag='0' and c.delflag='0'
+		GROUP BY h.homework_id)p GROUP BY p.course_id
+
+	</select>
+
+	<select id="getUnsubmitHomework" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT
+		h.homework_id,
+		h.homework_name,
+		c.course_name,
+		c.course_id,
+		DATE_FORMAT(h.endDate, '%Y-%m-%d')>=DATE_FORMAT(NOW(), '%Y-%m-%d') as flag,
+		DATE_FORMAT(h.endDate, '%Y-%m-%d')as endDate
+		FROM
+		homework h
+		LEFT JOIN submit s ON h.homework_id = s.homework_id
+		LEFT JOIN course
+		c on c.course_id=h.course_id
+		WHERE h.homework_id NOT in(SELECT
+		homework_id from submit where student_id=#{student_id} and
+		delflag='0') and h.delflag='0' and c.delflag='0'
+		GROUP BY h.homework_id 
+
+	</select>
+
+	<select id="getSubmit" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT
+		h.homework_name,
+		h.result_url,
+		(s.score=0) as flag,
+		h.homework_id,
+		DATE_FORMAT(h.endDate, '%Y-%m-%d') as endDate,
+		s.score,
+		c.course_name
+		FROM
+		homework h
+		LEFT JOIN submit s ON h.homework_id = s.homework_id
+		LEFT JOIN course c on c.course_id=h.course_id
+		WHERE s.student_id=#{student_id} and s.delflag='0' and h.delflag='0' and c.delflag='0'
+	</select>
+	
+	<select id="checkDate" resultType="int">
+		SELECT DATE_FORMAT(endDate, '%Y-%m-%d')>=DATE_FORMAT(NOW(), '%Y-%m-%d') 
+		from homework
+		WHERE delflag='0' and homework_id=#{homework_id} 
+	</select>
+	
+	<select id="checkScore" resultType="int">
+		SELECT count(1)
+		from homework h left join submit s on h.homework_id=s.homework_id
+		WHERE h.delflag='0' and h.homework_id=#{homework_id} and s.student_id=#{student_id} and s.score=0
+	</select>
+	
+	<select id="checkHomework" resultType="com.weike.rvo.HomeworkRVO">
+		SELECT h.*,s.submit_id,s.score
+		from homework h
+		LEFT JOIN submit s on s.homework_id=h.homework_id
+		WHERE h.delflag='0' and h.homework_id=#{homework_id} and s.student_id=#{student_id}
+	</select>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weike.dao.MaterialDao">
+
+	<select id="select" resultType="com.weike.rvo.MaterialRVO">
+		SELECT *
+		FROM material
+		WHERE delflag='0'
+		<if test="id != '' and id != null">
+			AND material_id = #{id}
+		</if>
+	</select>
+
+	<select id="listAll" resultType="com.weike.rvo.MaterialRVO">
+		SELECT * FROM material 
+		WHERE DELFLAG = '0' 
+        <if test="material_type != '' and material_type != null">  
+            AND material_type = #{material_type} 
+        </if>
+        <if test="url != '' and url != null">  
+            AND url = #{url} 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+            AND course_id = #{course_id} 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+            AND course_id = #{course_id} 
+        </if>
+        order by material_id desc
+	</select>
+
+	<select id="listAllRecordsCount" resultType="int">
+		SELECT COUNT(*) FROM
+		material
+		WHERE DELFLAG = '0' 
+		<if test="material_type != '' and material_type != null">  
+            AND material_type = #{material_type} 
+        </if>
+        <if test="url != '' and url != null">  
+            AND url = #{url} 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+            AND course_id = #{course_id} 
+        </if>
+        <if test="material_name != '' and material_name != null">  
+            AND material_name like CONCAT('%',#{material_name},'%')
+        </if>
+	</select>
+
+	<select id="listPage" resultType="com.weike.rvo.MaterialRVO">
+		SELECT * FROM material m
+		left join course c on m.course_id=c.course_id
+		WHERE m.DELFLAG = '0' 
+        <if test="params.material_type != '' and params.material_type != null">  
+            AND m.material_type = #{params.material_type} 
+        </if>
+        <if test="params.url != '' and params.url != null">  
+            AND m.url = #{params.url} 
+        </if>
+        <if test="params.course_id != '' and params.course_id != null">  
+            AND m.course_id = #{params.course_id} 
+        </if>
+        <if test="params.material_name != '' and params.material_name != null">  
+            AND m.material_name like CONCAT('%',#{params.material_name},'%')
+        </if>
+        order by material_id desc
+		LIMIT
+		#{start}, #{limit}
+	</select>
+
+	<insert id="insert" parameterType="com.weike.rvo.MaterialRVO">
+		<![CDATA[
+		insert into material(
+			material_type,
+			url,
+			course_id,
+			material_name
+		)
+		values(
+			#{material_type},
+			#{url},
+			#{course_id},
+			#{material_name}
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.weike.rvo.MaterialRVO">
+		UPDATE material
+		SET
+			<if test="material_type != '' and material_type != null">
+				material_type = #{material_type}
+			</if>
+			<if test="url != '' and url != null">
+				url = #{url}
+			</if>
+			<if test="course_id != '' and course_id != null">
+				course_id = #{course_id}
+			</if>
+		WHERE
+			material_id=#{material_id}
+	</update>
+
+	<delete id="delete">
+		UPDATE material
+		SET
+			delflag='1'
+		WHERE
+			material_id=#{id}
+	</delete>
+
+	<delete id="batchDelete">
+		DELETE FROM material
+		WHERE material_id IN
+		<foreach item="item" index="index" collection="delIds" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

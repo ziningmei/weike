@@ -1,0 +1,150 @@
+<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>微课-作业成绩</title>
+    
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/basic.css" rel="stylesheet">
+    <link href="../../css/common.css" rel="stylesheet">
+	<link href="../../css/theme.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="../../js/common/html5shiv.min.js"></script>
+      <script src="../../js/common/respond.min.js"></script>
+    <![endif]-->
+ 
+</head>
+<body>
+	<!--顶部导航-->
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#demo-navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="index.html" style="font-size:26px">微课</a>
+            </div>
+    
+        	<!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="demo-navbar">
+              <ul class="nav navbar-nav menu">
+                <li class="active"><a href="course_list.html">课程</a></li>
+                <li class="dropdown"><a href="#">个人中心</a>
+                    <ul class="submenu">
+                        <li><a href="personal_center.html">我的信息</a></li>
+                        <li><a href="center_mycourse.html">我的课程</a></li>
+                        <li><a href="center_myhomework.html">我的作业</a></li>
+                        <li><a href="center_myquestion.html">我的问答</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#">账号设置</a>
+                    <ul class="submenu">
+                        <li><a href="modify_myinfo.html">修改信息</a></li>
+                        <li><a href="modify_pwd.html">修改密码</a></li>
+                        <li><a href="#" data-toggle="modal" id="logout">退出登录</a></li>
+                    </ul>
+                </li>
+              </ul>
+         
+             
+              <form class="navbar-form navbar-right toprit-bar" role="search">
+                  <div class="pull-right white hidden">
+                      <button type="button" class="btn btn-primary btn-block">登录</button>
+                  </div>
+                 <div class="pull-right white welcome">
+                     <p class="form-control-static">欢迎你，<a href="personal_center.html" id="ID">1205107037</a></p>
+                  </div>
+                
+
+                  <div class="form-group pull-right webdesigntuts-workshop">		    
+                        <input type="search" placeholder="请输入要搜索的课程">		    	
+                        <a class="btn" href="search_result.html" id="search-btn" role="button">搜索</a>
+                  </div>
+              </form>
+        
+            </div><!-- /.navbar-collapse -->
+      	</div><!-- /.container-fluid -->
+	</nav>
+
+
+    <div class="container" id="container-summary">
+        <div class="question_area">
+        	<h4>作业题目：</h4>
+        	<div class="bg-primary img-rounded p10 mt10">
+                <p class="article" id="content"></p>
+            </div>
+        </div> 
+        
+        <!--
+        <div class="answer_area table-bordered p10 img-rounded">
+        	<h4>我的答案：</h4>
+        	<article>
+            	<p>1、其实美元符号$只是"jQuery"的别名，它是jQuery的选择器，如下代码：$(document).ready(function(){});当然你也可以用jQuery来代替$，如下代码：jQuery(document).ready(function(){});jQuery中就是通过这个美元符号来实现各种灵活的DOM元素选择的，例如$("#main")即选中id为main的元素。</p>
+            	<p>2、onload()和document.ready()的区别有以下两点：
+
+(1)我们可以在页面中使用多个document.ready()，但只能使用一次onload()。
+
+(2)document.ready()函数在页面DOM元素加载完以后就会被调用，而onload()函数则要在所有的关联资源（包括图像、音频）加载完毕后才会调用。
+				</p>
+            </article>
+        </div>
+        -->
+        
+        <div class="grade_area">
+        	<div class="row">
+            	<div class="col-md-6">
+                    <article>
+                        <p>成绩：<strong id="score"></strong></p>
+                       <!--  <p>评语：<strong>做得很棒</strong></p> -->
+                    </article>
+            	</div>
+                <div class="col-md-6">
+                    <p><a href="center_myhomework.html" class="go_back">返回作业列表</a></p>
+                    <p><a href="#" role="button" id="download" class="go_download btn btn-info btn-sm">去下载答案</a></p>
+            	</div>
+        </div>
+
+    </div> 
+    
+   
+
+<!--退出登录弹框-->  
+<div class="modal fade" id="exit" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="lead">确定要退出？？</p>
+            </div>
+            <div class="modal-footer">
+                 <a class="btn btn-default pull-left btn-primary btn-lg" href="../login.html" role="button">我确定</a>
+                <button type="button" class="btn btn-default pull-right btn-lg" data-dismiss="modal">闹着玩</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="../../js/common/jquery.min.js" type="text/javascript"></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <!-- sweet alert -->
+	<link href="../../css/sweet-alert.css" rel="stylesheet" />
+	<script src="../../js/common/sweet-alert.js"></script>
+	<!-- common -->
+	<script src="../../js/common/maskUtil.js"></script>
+	<script src="../../js/common/student.js"></script>
+	<script src="../../js/common/commonAjax.js"></script>
+	<script src="../../js/home/do_homework.js"></script>
+	<script type="text/javascript">
+		do_homework.showScore();
+	</script>
+  </body>
+</html>

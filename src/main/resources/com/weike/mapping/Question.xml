@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weike.dao.QuestionDao">
+
+	<select id="select" resultType="com.weike.rvo.QuestionRVO">
+		SELECT q.*,s.student_name
+		FROM question q
+		left join student s on s.student_id=q.user_id
+		WHERE q.delflag='0'
+		<if test="id != '' and id != null">
+			AND q.question_id = #{id}
+		</if>
+	</select>
+	
+	<select id="getList" resultType="com.weike.rvo.QuestionRVO">
+		SELECT *
+		FROM question
+		WHERE delflag='0'
+			AND user_id = #{student_id}
+	</select>
+
+	<select id="listAll" resultType="com.weike.rvo.QuestionRVO">
+		SELECT * FROM question q left join student s on s.student_id=q.user_id left join course c
+		on q.course_id = c.course_id
+		WHERE q.DELFLAG = '0' and c.delflag='0'
+        <if test="question_name != '' and question_name != null">  
+            AND q.question_name like CONCAT('%',#{question_name},'%') 
+        </if>
+        <if test="question_content != '' and question_content != null">  
+           AND q.question_content like CONCAT('%',#{question_content},'%') 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+            AND q.course_id = #{course_id} 
+        </if>
+        <if test="user_id != '' and user_id != null">  
+            AND q.user_id = #{user_id} 
+        </if>
+        order by q.question_id desc
+	</select>
+
+	<select id="listAllRecordsCount" resultType="int">
+		SELECT count(*) FROM question q
+		left join course c
+		on q.course_id = c.course_id
+		WHERE q.DELFLAG = '0' and c.delflag='0'
+		<if test="question_name != '' and question_name != null">  
+            AND q.question_name like CONCAT('%',#{question_name},'%') 
+        </if>
+        <if test="question_content != '' and question_content != null">  
+           AND q.question_content like CONCAT('%',#{question_content},'%') 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+            AND q.course_id = #{course_id} 
+        </if>
+        <if test="user_id != '' and user_id != null">  
+            AND q.user_id = #{user_id} 
+        </if>
+	</select>
+
+	<select id="listPage" resultType="com.weike.rvo.QuestionRVO">
+		SELECT q.* ,c.course_name FROM question q
+		left join course c
+		on q.course_id = c.course_id
+		WHERE q.DELFLAG = '0' and c.delflag='0'
+        <if test="params.question_name != '' and params.question_name != null">  
+            AND q.question_name like CONCAT('%',#{params.question_name},'%') 
+        </if>
+        <if test="params.question_content != '' and params.question_content != null">  
+           AND q.question_content like CONCAT('%',#{params.question_content},'%') 
+        </if>
+        <if test="params.course_id != '' and params.course_id != null">  
+            AND q.course_id = #{params.course_id} 
+        </if>
+        <if test="params.user_id != '' and params.user_id != null">  
+            AND q.user_id = #{params.user_id} 
+        </if>
+        order by q.question_id desc
+		LIMIT
+		#{start}, #{limit}
+	</select>
+
+	<insert id="insert" parameterType="com.weike.rvo.QuestionRVO">
+		<![CDATA[
+		insert into question(
+			question_name,
+			question_content,
+			course_id,
+			user_id
+		)
+		values(
+			#{question_name},
+			#{question_content},
+			#{course_id},
+			#{user_id}
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.weike.rvo.QuestionRVO">
+	<![CDATA[
+		UPDATE question
+		SET
+			<if test="question_name != '' and question_name != null">
+				question_name = #{question_name}
+			</if>
+			<if test="question_content != '' and question_content != null">
+				question_content = #{question_content}
+			</if>
+			<if test="lesson_id != '' and lesson_id != null">
+				lesson_id = #{lesson_id}
+			</if>
+			<if test="user_id != '' and user_id != null">
+				user_id = #{user_id}
+			</if>
+		WHERE
+			question_id=#{question_id}
+	]]>
+	</update>
+
+	<delete id="delete">
+		UPDATE question
+		SET
+			delflag='1'
+		WHERE
+			question_id=#{id}
+	</delete>
+
+	<delete id="batchDelete">
+		DELETE FROM question
+		WHERE question_id IN
+		<foreach item="item" index="index" collection="delIds" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

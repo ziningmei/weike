@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weike.dao.TeacherDao">
+
+	<select id="select" resultType="com.weike.rvo.TeacherRVO">
+		SELECT *
+		FROM teacher
+		WHERE delflag='0'
+		<if test="id != '' and id != null">
+			AND teacher_id = #{id}
+		</if>
+	</select>
+
+	<select id="listAll" resultType="com.weike.rvo.TeacherRVO">
+		SELECT * FROM teacher 
+		where delflag='0'
+		<if test="teacher_name != '' and teacher_name != null">  
+            AND teacher_name like CONCAT('%',#{teacher_name},'%')
+        </if>
+        <if test="teacher_pass != '' and teacher_pass != null">  
+            AND teacher_pass = #{teacher_pass} 
+        </if>
+        <if test="teacher_no != '' and teacher_no != null">  
+            AND teacher_no = #{teacher_no} 
+        </if>
+        order by teacher_id desc
+	</select>
+
+	<select id="listAllRecordsCount" resultType="int">
+		SELECT COUNT(*) FROM
+		teacher
+		WHERE DELFLAG = '0' 
+		<if test="teacher_name != '' and teacher_name != null">  
+            AND teacher_name like CONCAT('%',#{teacher_name},'%')
+        </if>
+        <if test="teacher_pass != '' and teacher_pass != null">  
+            AND teacher_pass = #{teacher_pass} 
+        </if>
+        <if test="teacher_no != '' and teacher_no != null">  
+            AND teacher_no = #{teacher_no} 
+        </if>
+	</select>
+
+	<select id="listPage" resultType="com.weike.rvo.TeacherRVO">
+		SELECT * FROM teacher
+		where delflag='0'
+		<if test="params.teacher_name != '' and params.teacher_name != null">  
+            AND teacher_name like CONCAT('%',#{params.teacher_name},'%')
+        </if>
+        <if test="params.teacher_pass != '' and params.teacher_pass != null">  
+            AND teacher_pass = #{params.teacher_pass} 
+        </if>
+        <if test="params.teacher_no != '' and params.teacher_no != null">  
+            AND teacher_no = #{params.teacher_no} 
+        </if>
+        order by teacher_id desc
+		LIMIT
+		#{start}, #{limit}
+	</select>
+
+	<insert id="insert" parameterType="com.weike.rvo.TeacherRVO">
+		<![CDATA[
+		insert into teacher(
+			teacher_name,
+			course_name,
+			teacher_pass,
+			teacher_no,
+			phone,
+			email
+		)
+		values(
+			#{teacher_name},
+			#{course_name},
+			#{teacher_pass},
+			#{teacher_no},
+			#{phone},
+			#{email}
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.weike.rvo.TeacherRVO">
+		UPDATE teacher
+		SET
+			<if test="teacher_name != '' and teacher_name != null">
+				teacher_name = #{teacher_name},
+			</if>
+			<if test="phone != '' and phone != null">
+				phone = #{phone},
+			</if>
+			<if test="teacher_no != '' and teacher_no != null">
+				teacher_no = #{teacher_no},
+			</if>
+			<if test="teacher_pass != '' and teacher_pass != null">
+				teacher_pass = #{teacher_pass},
+			</if>
+			<if test="email != '' and email != null">
+				email = #{email}
+			</if>
+		WHERE
+			teacher_id=#{teacher_id}
+	</update>
+
+	<delete id="delete">
+		UPDATE teacher
+		SET
+		delflag='1'
+		WHERE
+		teacher_id=#{teacher_id}
+	</delete>
+
+	<delete id="batchDelete">
+		DELETE FROM teacher
+		WHERE teacher_id IN
+		<foreach item="item" index="index" collection="delIds" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="teacherLogin" resultType="com.weike.rvo.TeacherRVO">
+		select * from teacher
+		where delflag='0' and
+		teacher_no=#{teacher_no}
+		and teacher_pass=#{teacher_pass}
+	</select>
+</mapper>
