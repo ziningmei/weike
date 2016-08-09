@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weike.dao.CourseStudentDao">
+
+	<select id="select" resultType="com.weike.rvo.CourseStudentRVO">
+		SELECT *
+		FROM course_student
+		WHERE 1=1
+		<if test="id != '' and id != null">
+			AND course_student_id = #{id}
+		</if>
+	</select>
+
+	<select id="listAll" resultType="com.weike.rvo.CourseStudentRVO">
+		SELECT * FROM course_student 
+		where delflag='0'
+		<if test="student_id != '' and student_id != null">  
+             AND student_id = #{student_id} 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+             AND course_id = #{course_id} 
+        </if>
+        order by course_student_id desc
+	</select>
+
+	<select id="listAllRecordsCount" resultType="int">
+		SELECT COUNT(*) FROM
+		course_student
+		where delflag='0'
+		<if test="student_id != '' and student_id != null">  
+             AND student_id = #{student_id} 
+        </if>
+        <if test="course_id != '' and course_id != null">  
+             AND course_id = #{course_id} 
+        </if>
+	</select>
+
+	<select id="listPage" resultType="com.weike.rvo.CourseStudentRVO">
+		SELECT * FROM course_student
+		where delflag='0'
+		<if test="params.student_id != '' and params.student_id != null">  
+             AND student_id = #{params.student_id} 
+        </if>
+        <if test="params.course_id != '' and params.course_id != null">  
+             AND course_id = #{params.course_id} 
+        </if>
+		order by course_student_id desc
+		LIMIT
+		#{start}, #{limit}
+	</select>
+
+	<insert id="insert" parameterType="com.weike.rvo.CourseStudentRVO">
+		<![CDATA[
+		insert into course_student(
+			student_id,
+			course_id
+		)
+		values(
+			#{student_id},
+			#{course_id}
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.weike.rvo.CourseStudentRVO">
+		UPDATE course_student
+		<set>
+			<if test="student_id != '' and student_id != null">
+				student_id = #{student_id},
+			</if>
+			<if test="course_id != '' and course_id != null">
+				course_id = #{course_id}
+			</if>
+			</set>
+		WHERE
+			course_student_id=#{course_student_id}
+	</update>
+
+	<delete id="delete">
+		UPDATE course_student
+		SET
+			delflag='1'
+		WHERE
+			course_student_id=#{id}
+	</delete>
+
+	<delete id="batchDelete">
+		DELETE FROM course_student
+		WHERE course_student_id IN
+		<foreach item="item" index="index" collection="delIds" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

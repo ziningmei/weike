@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weike.dao.SubmitDao">
+
+	<select id="select" resultType="com.weike.rvo.SubmitRVO">
+		SELECT s.*,h.homework_name,h.result_url
+		FROM submit s left join homework h on s.homework_id=h.homework_id
+		WHERE s.delflag='0'
+		<if test="id != '' and id != null">
+			AND s.submit_id = #{id}
+		</if>
+	</select>
+
+	<select id="listAll" resultType="com.weike.rvo.SubmitRVO">
+		SELECT s.*,h.homework_name,t.student_name 
+		FROM submit s 
+		LEFT JOIN homework h on s.homework_id=h.homework_id
+		LEFT JOIN student t on s.student_id=t.student_id
+		where s.delflag='0'
+        <if test="student_id != '' and student_id != null">  
+            AND s.student_id = #{student_id}
+        </if>
+        <if test="homework_id != '' and homework_id != null">  
+            AND s.homework_id = #{homework_id} 
+        </if>
+        <if test="init_url != '' and init_url != null">  
+            AND s.init_url = #{init_url} 
+        </if>
+        <if test="score != '' and score != null">  
+            AND s.score = #{score} 
+        </if>
+		order by submit_id desc
+	</select>
+
+	<select id="listAllRecordsCount" resultType="int">
+		SELECT COUNT(*) FROM
+		submit
+		WHERE DELFLAG = '0' 
+		<if test="student_id != '' and student_id != null">  
+            AND student_id = #{student_id}
+        </if>
+        <if test="homework_id != '' and homework_id != null">  
+            AND homework_id = #{homework_id} 
+        </if>
+        <if test="init_url != '' and init_url != null">  
+            AND init_url = #{init_url} 
+        </if>
+        <if test="score != '' and score != null">  
+            AND score = #{score} 
+        </if>
+	</select>
+
+	<select id="listPage" resultType="com.weike.rvo.SubmitRVO">
+		SELECT * FROM submit
+		where delflag='0'
+        <if test="params.student_id != '' and params.student_id != null">  
+            AND student_id = #{params.student_id}
+        </if>
+        <if test="params.homework_id != '' and params.homework_id != null">  
+            AND homework_id = #{params.homework_id} 
+        </if>
+        <if test="params.init_url != '' and params.init_url != null">  
+            AND init_url = #{params.init_url} 
+        </if>
+        <if test="params.score != '' and params.score != null">  
+            AND score = #{params.score} 
+        </if>
+		order by submit_id desc
+		LIMIT
+		#{start}, #{limit}
+	</select>
+
+	<insert id="insert" parameterType="com.weike.rvo.SubmitRVO">
+		<![CDATA[
+		insert into submit(
+			student_id,
+			homework_id,
+			init_url
+		)
+		values(
+			#{student_id},
+			#{homework_id},
+			#{init_url}
+		)
+		]]>
+	</insert>
+
+	<update id="update" parameterType="com.weike.rvo.SubmitRVO">
+		UPDATE submit
+		SET
+			<if test="homework_id != '' and homework_id != null">
+				homework_id = #{homework_id},
+			</if>
+			<if test="init_url != '' and init_url != null">
+				init_url = #{init_url},
+			</if>
+			<if test="score != '' and score != null">
+				score = #{score}
+			</if>
+			<if test="student_id != '' and student_id != null">
+				student_id = #{student_id}
+			</if>
+		WHERE
+			submit_id=#{submit_id}
+	</update>
+
+	<delete id="delete">
+		UPDATE submit
+		SET
+			delflag='1'
+		WHERE
+			submit_id=#{submit_id}
+	</delete>
+
+	<delete id="batchDelete">
+		DELETE FROM submit
+		WHERE submit_id IN
+		<foreach item="item" index="index" collection="delIds" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,292 @@
+<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>微课-个人中心</title>
+
+<link href="../../css/bootstrap.min.css" rel="stylesheet">
+<link href="../../css/basic.css" rel="stylesheet">
+<link href="../../css/common.css" rel="stylesheet">
+<link href="../../css/theme.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../../css/style1.css" />
+
+<!--[if lt IE 9]>
+      <script src="../../js/common/html5shiv.min.js"></script>
+      <script src="../../js/common/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body id="main">
+	<!--顶部导航-->
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse"
+		role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#demo-navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html" style="font-size: 26px">微课</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="demo-navbar">
+				<ul class="nav navbar-nav menu">
+					<li class="active"><a href="course_list.html">课程</a></li>
+					<li class="dropdown"><a href="#">个人中心</a>
+						<ul class="submenu">
+							<li><a href="personal_center.html">我的信息</a></li>
+							<li><a href="center_mycourse.html">我的课程</a></li>
+							<li><a href="center_myhomework.html">我的作业</a></li>
+							<li><a href="center_myquestion.html">我的问答</a></li>
+						</ul></li>
+					<li class="dropdown"><a href="#">账号设置</a>
+						<ul class="submenu">
+							<li><a href="modify_myinfo.html">修改信息</a></li>
+							<li><a href="modify_pwd.html">修改密码</a></li>
+							<li><a href="#" data-toggle="modal" id="logout">退出登录</a></li>
+						</ul></li>
+				</ul>
+
+
+				<form class="navbar-form navbar-right toprit-bar" role="search">
+					<div class="pull-right white hidden">
+						<button type="button" class="btn btn-primary btn-block">登录</button>
+					</div>
+					<div class="pull-right white welcome">
+						<p class="form-control-static">
+							欢迎你，<a href="personal_center.html" id="student_name"></a>
+						</p>
+					</div>
+
+
+					<div class="form-group pull-right webdesigntuts-workshop">
+						<input type="search" placeholder="请输入要搜索的课程"> <a
+							class="btn" href="search_result.html" id="search-btn"
+							role="button">搜索</a>
+					</div>
+				</form>
+
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+
+	<header id="center-header">
+		<div class="container">
+			<div id="clock">
+				<canvas id="myCanvas" width="150" height="150"></canvas>
+			</div>
+			<h1 class=" mt50" id="student_name"></h1>
+			<p>学生</p>
+		</div>
+	</header>
+
+	<div class="container" id="container-main">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="sidebar">
+					<ul class="ca-menu">
+						<li><span class="ca-icon">A</span>
+							<div class="ca-content">
+								<a href="personal_center.html" class="ca-sub">我的信息</a>
+							</div></li>
+						<li><span class="ca-icon">q</span>
+							<div class="ca-content">
+								<a href="center_mycourse.html" class="ca-sub">我的课程</a>
+							</div></li>
+						<li><span class="ca-icon">b</span>
+							<div class="ca-content">
+								<a href="center_myhomework.html" class="ca-sub">我的作业</a>
+							</div></li>
+						<li class="active"><span class="ca-icon">c</span>
+							<div class="ca-content">
+								<a href="center_myquestion.html" class="ca-sub">我的问答</a>
+							</div></li>
+					</ul>
+				</div>
+				<!--sidebar ed-->
+			</div>
+
+			<div class="col-md-9" id="main-con">
+				<ul class="nav nav-tabs" role="tablist" id="feature-tab">
+					<li class="active"><a href="#myquestion" role="tab"
+						data-toggle="tab">我的问题</a></li>
+					<li><a href="#myanswer" role="tab" data-toggle="tab">我的回答</a></li>
+				</ul>
+
+				<div class="tab-content question_bg">
+					<div class="tab-pane active" id="myquestion">
+						<div class="row">
+							<div class="col-md-8 col-md-offset-2">
+								<ul id="myQuestion">
+									<!-- <li>
+										<p class="clearfix">
+											<span class="name pull-left">我：</span> <span
+												class="question_tit pull-left">如何快速成为大神</span> <a
+												class="btn btn-info pull-right btn-sm white" role="button"
+												href="#" data-toggle="modal" data-target="#question_detail">查看</a>
+										</p>
+									</li>
+									<li>
+										<p class="clearfix">
+											<span class="name pull-left">我：</span> <span
+												class="question_tit pull-left">如何快速成为大神</span> <a
+												class="btn btn-info pull-right btn-sm white" role="button"
+												href="#" data-toggle="modal" data-target="#question_detail">查看</a>
+										</p>
+									</li>
+									<li>
+										<p class="clearfix">
+											<span class="name pull-left">我：</span> <span
+												class="question_tit pull-left">如何快速成为大神</span> <a
+												class="btn btn-info pull-right btn-sm white" role="button"
+												href="#" data-toggle="modal" data-target="#question_detail">查看</a>
+										</p>
+									</li> -->
+								</ul>
+							</div>
+						</div>
+						<!--row ed-->
+
+					</div>
+
+
+					<div class="tab-pane" id="myanswer">
+
+						<div class="row">
+							<div class="col-md-8 col-md-offset-2">
+								<ul id="myAnswer">
+									<!-- <li>
+										<p class="clearfix">
+											<span class="name pull-left">我：</span> <span
+												class="question_tit pull-left">对于这个问题，我想告诉你应该这样，具体哪样呢，你听我细细讲来。</span>
+											<a class="btn btn-info pull-right btn-sm white" role="button"
+												href="#" data-toggle="modal" data-target="#question_detail">查看</a>
+										</p>
+									</li>
+									<li>
+										<p class="clearfix">
+											<span class="name pull-left">我：</span> <span
+												class="question_tit pull-left">对于这个问题，我想告诉你应该这样，具体哪样呢，你听我细细讲来。</span>
+											<a class="btn btn-info pull-right btn-sm white" role="button"
+												href="#" data-toggle="modal" data-target="#question_detail">查看</a>
+										</p>
+									</li>
+									<li>
+										<p class="clearfix">
+											<span class="name pull-left">我：</span> <span
+												class="question_tit pull-left">对于这个问题，我想告诉你应该这样，具体哪样呢，你听我细细讲来。</span>
+											<a class="btn btn-info pull-right btn-sm white" role="button"
+												href="#" data-toggle="modal" data-target="#question_detail">查看</a>
+										</p>
+									</li> -->
+								</ul>
+							</div>
+						</div>
+						<!--row ed-->
+
+					</div>
+				</div>
+			</div>
+			<!--右边-->
+		</div>
+		<!--row ed-->
+
+		<footer>
+			<hr class="feature-divider">
+			<p class="pull-right">
+				<a href="#top" class="backTop">回到顶部</a>
+			</p>
+			<p>
+				<span class="copyRight">&copy; 微课</span>
+			</p>
+		</footer>
+
+	</div>
+	<!--container ed-->
+
+
+
+	<!-- modal begin -->
+	<div class="modal fade" id="question_detail">
+		<div class="modal-dialog">
+			<form class="form-horizontal addshop-form" method="post"
+				enctype="multipart/form-data" id="form_add" role="form" action=""
+				name="form_add">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title">查看问题</h4>
+					</div>
+					<div class="modal-body" id="detail">
+						<!-- <div class="question clearfix">
+							<h4 class="pull-left">小李子:</h4>
+							<p class="article pull-left">如何快速成为大神</p>
+						</div>
+						<div class="answer clearfix">
+							<h5>李老师:</h5>
+							<p class="article">好好学习，天天向上</p>
+						</div>
+ -->
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							<span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp; 关闭
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+
+
+	<!--退出登录弹框-->
+	<div class="modal fade" id="exit" tabindex="-1" role="dialog"
+		aria-labelledby="modal-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<p class="lead">确定要退出？？</p>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-default pull-left btn-primary btn-lg"
+						href="../login.html" role="button">我确定</a>
+					<button type="button" class="btn btn-default pull-right btn-lg"
+						data-dismiss="modal">闹着玩</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="../../js/common/jquery.min.js" type="text/javascript"></script>
+	<script src="../../js/common/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../js/common/shizhong.js"></script>
+	<!-- sweet alert -->
+	<link href="../../css/sweet-alert.css" rel="stylesheet" />
+	<script src="../../js/common/sweet-alert.js"></script>
+	<!-- common -->
+	<script src="../../js/common/maskUtil.js"></script>
+	<script src="../../js/common/student.js"></script>
+	<script src="../../js/common/commonAjax.js"></script>
+	<script src="../../js/home/center_myquestion.js"></script>
+	<script>
+		$(function() {
+			center_myquestion.init();
+		})
+	</script>
+</body>
+</html>
